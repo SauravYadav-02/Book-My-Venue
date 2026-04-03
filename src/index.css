@@ -1,0 +1,45 @@
+/* Google font FIRST */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+/* Then Tailwind */
+@import "tailwindcss";
+
+/* Then your styles */
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+}
+
+/* =========================
+   🎨 DESIGN TOKENS (THEME)
+========================= */
+@theme {
+  --color-primary: #1a2e20;
+  --color-primary-light: #2e7d52;
+  --color-primary-bg: #e8f5ec;
+}
+
+/* =========================
+   🌍 BASE STYLES
+========================= */
+@layer base {
+  /* body {
+    @apply bg-white text-gray-800;
+  } */
+}
+
+/* =========================
+   🧩 OPTIONAL UTILITIES
+========================= */
+@layer utilities {
+
+  /* Example: custom shadow */
+  .shadow-soft {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+}

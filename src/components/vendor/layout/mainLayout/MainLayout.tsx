@@ -1,0 +1,28 @@
+
+import Layout from '../Layout'
+import DashBoardCard from '../../DashboardStats'
+import Bar_chart from '../../componentsVendor/Bar_chart'
+import BookingRequests from '../../componentsVendor/BookingRequests'
+
+const MainLayout = () => {
+    return (
+        <Layout>
+            <div className='flex flex-col gap-6 w-full max-w-7xl mx-auto'>
+                {/* Top Row: Stats Cards */}
+                <DashBoardCard />
+
+                {/* Bottom Row: Chart (Left) + Requests (Right) */}
+                <div className='grid grid-cols-1 xl:grid-cols-3 gap-6 items-start'>
+                    <div className='xl:col-span-2 w-full'>
+                        <Bar_chart />
+                    </div>
+                    <div className='xl:col-span-1 w-full h-full'>
+                        <BookingRequests />
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    )
+}
+
+export default MainLayout
