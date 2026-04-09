@@ -24,10 +24,10 @@ export default function FormSection({
 }: Props) {
 
     return (
-        <div className="space-y-5">
+        <div className="space-y-6 border border-slate-200 rounded-xl p-5 bg-slate-50">
 
             <div>
-                <h2 className="text-sm font-semibold">{title}</h2>
+                <h2 className="text-sm font-semibold text-slate-700">{title}</h2>
                 {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
             </div>
 

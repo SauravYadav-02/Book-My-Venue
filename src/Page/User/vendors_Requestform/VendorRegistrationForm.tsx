@@ -47,7 +47,6 @@ const FIELDS: Field[] = [
 ];
 
 export default function VendorRegistrationForm() {
-
     const [values, setValues] = useState<FormValues>(INIT);
     const [touched, setTouched] = useState<Touched>({});
     const [status, setStatus] = useState("idle");
@@ -63,7 +62,6 @@ export default function VendorRegistrationForm() {
     };
 
     async function handleSubmit() {
-
         setTouched(Object.keys(values).reduce((a, k) => ({ ...a, [k]: true }), {}));
 
         if (Object.values(errors).some(Boolean)) return;
@@ -77,55 +75,64 @@ export default function VendorRegistrationForm() {
     }
 
     if (status === "success") {
-        return <SuccessScreen name={values.fullName} reset={() => {
-            setValues(INIT);
-            setTouched({});
-            setStatus("idle");
-        }} />;
+        return (
+            <SuccessScreen
+                name={values.fullName}
+                reset={() => {
+                    setValues(INIT);
+                    setTouched({});
+                    setStatus("idle");
+                }}
+            />
+        );
     }
 
     return (
-        <div className="p-6 max-w-3xl mx-auto space-y-6">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 p-4">
+            <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-8 space-y-8">
 
-            <h1 className="text-xl font-bold text-center">Vendor Registration</h1>
+                <h1 className="text-2xl font-bold text-center text-slate-800">
+                    Vendor Registration
+                </h1>
 
-            <FormSection
-                title="Personal Info"
-                fields={FIELDS.filter(f => f.section === "personal")}
-                values={values}
-                errors={errors}
-                touched={touched}
-                set={set}
-                blur={blur}
-            />
+                <FormSection
+                    title="Personal Info"
+                    fields={FIELDS.filter(f => f.section === "personal")}
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    set={set}
+                    blur={blur}
+                />
 
-            <FormSection
-                title="Business Info"
-                fields={FIELDS.filter(f => f.section === "business")}
-                values={values}
-                errors={errors}
-                touched={touched}
-                set={set}
-                blur={blur}
-            />
+                <FormSection
+                    title="Business Info"
+                    fields={FIELDS.filter(f => f.section === "business")}
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    set={set}
+                    blur={blur}
+                />
 
-            <FormSection
-                title="Security"
-                fields={FIELDS.filter(f => f.section === "security")}
-                values={values}
-                errors={errors}
-                touched={touched}
-                set={set}
-                blur={blur}
-            />
+                <FormSection
+                    title="Security"
+                    fields={FIELDS.filter(f => f.section === "security")}
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    set={set}
+                    blur={blur}
+                />
 
-            <button
-                onClick={handleSubmit}
-                className="w-full bg-green-700 text-white py-3 rounded"
-            >
-                Submit
-            </button>
+                <button
+                    onClick={handleSubmit}
+                    className="w-full bg-green-600 hover:bg-green-700 transition text-white py-3 rounded-xl font-medium shadow"
+                >
+                    Submit
+                </button>
 
+            </div>
         </div>
     );
 }
