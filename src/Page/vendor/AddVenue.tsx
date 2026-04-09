@@ -7,12 +7,16 @@ import StepBasicInfo from "./AddVenue/Components/StepBasicInfo";
 import StepLocation from "./AddVenue/Components/StepLocation";
 import StepAmenities from "./AddVenue/Components/StepAmenities";
 import StepReview from "./AddVenue/Components/StepReview";
+import { createVenue } from "../../services/venueService";
+
+
 export default function AddVenue() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<VenueForm>({ ...INITIAL_FORM, amenities: new Set() });
   const [errors, setErrors] = useState<FormErrors>({});
   const [toast, setToast] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const update = (key: keyof VenueForm, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -21,14 +25,11 @@ export default function AddVenue() {
 
   const toggleAmenity = (name: string) => {
     setForm((prev) => {
-      const exists = prev.amenities.includes(name);
-
-      return {
-        ...prev,
-        amenities: exists
-          ? prev.amenities.filter((a) => a !== name)
-          : [...prev.amenities, name],
-      };
+      const exists = Array.from(prev.amenities).includes(name);
+      const newAmenities = exists
+        ? Array.from(prev.amenities).filter((a) => a !== name)
+        : [...Array.from(prev.amenities), name];
+      return { ...prev, amenities: new Set(newAmenities) };
     });
   };
 
@@ -38,7 +39,6 @@ export default function AddVenue() {
   const addMedia = () =>
     setForm((prev) => ({ ...prev, mediaFiles: [...prev.mediaFiles, `photo-${prev.mediaFiles.length + 1}.jpg`] }));
 
-  // Validation
   const validateStep = (s: number): boolean => {
     const errs: FormErrors = {};
     if (s === 0) {
@@ -58,14 +58,25 @@ export default function AddVenue() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!validateStep(step)) return;
+
     if (step === STEPS.length - 1) {
-      setToast(true);
-      setSubmitted(true);
-      setTimeout(() => setToast(false), 3500);
+      try {
+        setLoading(true);
+        const result = await createVenue(form);
+        console.log("Venue created:", result);
+        setSubmitted(true);
+        setToast(true);
+        setTimeout(() => setToast(false), 3500);
+      } catch (error) {
+        alert(`Failed to publish venue. Please try again.,${error}`);
+      } finally {
+        setLoading(false);
+      }
       return;
     }
+
     setStep((s) => s + 1);
   };
 
@@ -87,7 +98,11 @@ export default function AddVenue() {
             <span className="font-medium text-slate-700">{form.name}</span> is now live and visible to customers.
           </p>
           <button
-            onClick={() => { setForm({ ...INITIAL_FORM, amenities: new Set() }); setStep(0); setSubmitted(false); }}
+            onClick={() => {
+              setForm({ ...INITIAL_FORM, amenities: new Set() });
+              setStep(0);
+              setSubmitted(false);
+            }}
             className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-colors"
           >
             Add another venue
@@ -100,8 +115,6 @@ export default function AddVenue() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 sm:p-8">
       <div className="max-w-2xl mx-auto">
-
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Add new venue</h1>
@@ -112,25 +125,17 @@ export default function AddVenue() {
           </span>
         </div>
 
-        {/* Step bar */}
         <StepBar current={step} />
 
-        {/* Toast */}
         <Toast message="Venue published successfully!" show={toast} />
 
-        {/* Step content */}
         {step === 0 && <StepBasicInfo form={form} errors={errors} update={update} />}
         {step === 1 && <StepLocation form={form} errors={errors} update={update} />}
         {step === 2 && (
-          <StepAmenities
-            form={form}
-            updateAmenities={toggleAmenity}
-            updateAvailability={updateAvailability}
-          />
+          <StepAmenities form={form} updateAmenities={toggleAmenity} updateAvailability={updateAvailability} />
         )}
         {step === 3 && <StepReview form={form} onAddMedia={addMedia} />}
 
-        {/* Footer */}
         <div className="flex items-center justify-between mt-2">
           <button
             type="button"
@@ -147,11 +152,13 @@ export default function AddVenue() {
           <button
             type="button"
             onClick={handleNext}
-            className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
-              bg-emerald-500 hover:bg-emerald-600 text-white transition-all shadow-sm shadow-emerald-200"
+            disabled={loading}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold
+              bg-emerald-500 hover:bg-emerald-600 text-white transition-all shadow-sm shadow-emerald-200 ${loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
           >
-            {step === STEPS.length - 1 ? "Publish listing" : "Continue"}
-            {step < STEPS.length - 1 && (
+            {loading ? "Publishing..." : step === STEPS.length - 1 ? "Publish listing" : "Continue"}
+            {!loading && step < STEPS.length - 1 && (
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

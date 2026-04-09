@@ -26,5 +26,5 @@ export type Field = {
     type?: string;
     placeholder?: string;
     section: 'personal' | 'business' | 'security';
-    options?: string[]; // 🔥 for dropdown
+    options?: string[];
 };
