@@ -1,21 +1,23 @@
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+
 import { type CreateVendorRequest, type Vendor } from "../Page/User/vendors_Requestform/ReqComponet/types/vendorTypes";
 
-const API_URL = "http://localhost:4000/vendors";
+const API_URL = "http://localhost:3000/vendors/register";
 
 export async function createVendor(
     data: CreateVendorRequest
 ): Promise<Vendor> {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+            formData.append(key, value as string | Blob);
+        }
+    });
+    formData.append("status", "pending");
+    formData.append("adminMessage", "");
 
-    const res = await axios.post<Vendor>(API_URL, {
-        ...data,
-        id: uuidv4(),
-        status: "pending",
-        adminMessage: "",
-        rating: 0,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+    const res = await axios.post<Vendor>(API_URL, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
     });
 
     return res.data;

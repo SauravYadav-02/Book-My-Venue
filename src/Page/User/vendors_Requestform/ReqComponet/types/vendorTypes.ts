@@ -4,8 +4,8 @@ export type CreateVendorRequest = {
     phone: string;
     businessName: string;
     businessType: string;
-    governmentId: string;
-    password: string;
+    governmentId: File | null;
+
 
     address: string;
     pincode: string;

@@ -1,4 +1,3 @@
-import React from "react";
 import { DollarSign, Building, CalendarCheck } from "lucide-react";
 
 const cardData = [

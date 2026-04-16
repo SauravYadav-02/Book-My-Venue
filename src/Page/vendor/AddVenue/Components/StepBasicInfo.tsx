@@ -14,7 +14,7 @@ function StepBasicInfo({
     return (
         <>
             <SectionCard title="Basic info">
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-8">
                     <div>
                         <Label required>Venue name</Label>
                         <InputField
@@ -22,7 +22,7 @@ function StepBasicInfo({
                             onChange={(v) => update("name", v)} error={errors.name}
                         />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-6">
                         <div>
                             <Label required>Venue type</Label>
                             <SelectField
@@ -51,15 +51,7 @@ function StepBasicInfo({
             </SectionCard>
 
             <SectionCard title="Pricing">
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <Label required>Per hour ($)</Label>
-                        <InputField
-                            id="pricePerHour" type="number" value={form.pricePerHour}
-                            placeholder="e.g. 400" min="0"
-                            onChange={(v) => update("pricePerHour", v)} error={errors.pricePerHour}
-                        />
-                    </div>
+                <div className="grid grid-cols-1 gap-6">
                     <div>
                         <Label required>Per day ($)</Label>
                         <InputField

@@ -1,27 +1,19 @@
 import { ALL_AMENITIES } from "../types/Constants";
-import type { AvailabilityEntry, VenueForm } from "../types/Interface";
+import type { VenueForm } from "../types/Interface";
 import SectionCard from "./SectionCard";
 
 function StepAmenities({
-    form, updateAmenities, updateAvailability,
+    form, updateAmenities, update,
 }: {
     form: VenueForm;
     updateAmenities: (name: string) => void;
-    updateAvailability: (list: AvailabilityEntry[]) => void;
+    update: (k: keyof VenueForm, v: string) => void;
 }) {
-    const addDate = () => updateAvailability([...form.availability, { date: "", status: "available" }]);
-    const removeDate = (i: number) => updateAvailability(form.availability.filter((_, idx) => idx !== i));
-    const updateDate = (i: number, key: keyof AvailabilityEntry, val: string) => {
-        const updated = form.availability.map((a, idx) =>
-            idx === i ? { ...a, [key]: val } : a
-        );
-        updateAvailability(updated);
-    };
 
     return (
         <>
             <SectionCard title="Amenities">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                     {ALL_AMENITIES.map((a) => {
                         const selected = form.amenities.has(a);
                         return (
@@ -47,44 +39,20 @@ function StepAmenities({
                 </div>
             </SectionCard>
 
-            <SectionCard title="Availability dates">
-                <div className="space-y-2.5">
-                    {form.availability.map((entry, i) => (
-                        <div key={i} className="grid grid-cols-[1fr_140px_32px] gap-2 items-center">
-                            <input
-                                type="date"
-                                value={entry.date}
-                                onChange={(e) => updateDate(i, "date", e.target.value)}
-                                className="w-full px-3 py-2 rounded-xl text-sm bg-slate-50 border border-slate-200
-                  text-slate-700 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 transition-all"
-                            />
-                            <select
-                                value={entry.status}
-                                onChange={(e) => updateDate(i, "status", e.target.value)}
-                                className="w-full px-3 py-2 rounded-xl text-sm bg-slate-50 border border-slate-200
-                  text-slate-700 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 transition-all"
-                            >
-                                <option value="available">Available</option>
-                                <option value="booked">Booked</option>
-                            </select>
-                            <button
-                                type="button"
-                                onClick={() => removeDate(i)}
-                                className="w-8 h-8 flex items-center justify-center rounded-xl border border-slate-200
-                  text-slate-400 hover:border-rose-300 hover:text-rose-400 hover:bg-rose-50 transition-all text-sm"
-                            >
-                                ×
-                            </button>
-                        </div>
-                    ))}
+            <SectionCard title="Availability">
+                <div className="grid grid-cols-1 gap-4">
+                    <div>
+                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5 block">
+                            Available From
+                        </label>
+                        <input
+                            type="date"
+                            value={form.availableFrom}
+                            onChange={(e) => update("availableFrom", e.target.value)}
+                            className="w-full px-4 py-3 rounded-xl text-sm bg-white border border-slate-200 text-slate-800 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
+                        />
+                    </div>
                 </div>
-                <button
-                    type="button"
-                    onClick={addDate}
-                    className="mt-3 text-xs text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
-                >
-                    + Add date
-                </button>
             </SectionCard>
         </>
     );

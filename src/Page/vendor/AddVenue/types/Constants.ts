@@ -1,6 +1,6 @@
 import type { VenueForm } from "./Interface";
 
-export const STEPS = ["Basic info", "Location", "Amenities & availability", "Review & publish"];
+export const STEPS = ["Basic info", "Location", "Amenities & details", "Review & publish"];
 
 export const VENUE_TYPES = [
     "Banquet Hall",
@@ -21,9 +21,8 @@ export const COUNTRIES = ["United States", "India", "United Kingdom", "Canada", 
 
 export const INITIAL_FORM: VenueForm = {
     name: "", type: "", capacity: "", description: "",
-    pricePerHour: "", pricePerDay: "",
+    pricePerDay: "", availableFrom: "",
     address: "", city: "", state: "", zip: "", country: "United States", lat: "", lng: "",
     amenities: new Set(),
-    availability: [{ date: "", status: "available" }],
     mediaFiles: [],
 };

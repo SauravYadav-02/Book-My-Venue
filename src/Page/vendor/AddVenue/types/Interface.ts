@@ -1,15 +1,12 @@
-export interface AvailabilityEntry {
-    date: string;
-    status: "available" | "booked";
-}
+
 
 export interface VenueForm {
     name: string;
     type: string;
     capacity: string;
     description: string;
-    pricePerHour: string;
     pricePerDay: string;
+    availableFrom: string;
     address: string;
     city: string;
     state: string;
@@ -18,8 +15,7 @@ export interface VenueForm {
     lat: string;
     lng: string;
     amenities: Set<string>;
-    availability: AvailabilityEntry[];
-    mediaFiles: string[];
+    mediaFiles: (File | string)[];
 }
 
 export type FormErrors = Partial<Record<keyof VenueForm | string, string>>;

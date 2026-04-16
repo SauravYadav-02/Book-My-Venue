@@ -16,13 +16,12 @@ export function validate(v: FormValues): Errors {
     if (!v.businessName) e.businessName = "Required";
     if (!v.businessType) e.businessType = "Required";
     if (!v.governmentId) e.governmentId = "Required";
+    if (!v.licenseDoc) e.licenseDoc = "Required";
 
     if (!v.address) e.address = "Required";
     if (!v.pincode) e.pincode = "Required";
     if (!v.state) e.state = "Required";
 
-    if (!v.password || v.password.length < 6)
-        e.password = "Min 6 characters";
-
     return e;
+
 }

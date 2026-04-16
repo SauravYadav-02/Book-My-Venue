@@ -13,7 +13,7 @@ function StepLocation({
 }) {
     return (
         <SectionCard title="Location">
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-8">
                 <div>
                     <Label required>Street address</Label>
                     <InputField
@@ -21,7 +21,7 @@ function StepLocation({
                         onChange={(v) => update("address", v)} error={errors.address}
                     />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-6">
                     <div>
                         <Label required>City</Label>
                         <InputField
@@ -37,7 +37,7 @@ function StepLocation({
                         />
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-6">
                     <div>
                         <Label>ZIP code</Label>
                         <InputField
@@ -58,7 +58,7 @@ function StepLocation({
                     <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-2">
                         Coordinates <span className="normal-case font-normal">(optional)</span>
                     </p>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-6">
                         <InputField
                             id="lat" type="number" value={form.lat} placeholder="Latitude e.g. 39.7817"
                             step="any" onChange={(v) => update("lat", v)}
