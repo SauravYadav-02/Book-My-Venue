@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { LoginForm, LoginResponse, Role } from "../components/common/types/authTypes";
+import type { LoginForm, LoginResponse, Role } from "../types/authTypes";
 
 
 export const loginUser = async (

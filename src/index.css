@@ -1,5 +1,5 @@
 /* Google font FIRST */
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 /* Then Tailwind */
 @import "tailwindcss";
@@ -12,16 +12,21 @@
 }
 
 body {
-  background-color: #f5f5f5;
+  background-color: #f7f6f2; /* Warm soft beige from design */
+  color: #2a2a2a;
 }
 
 /* =========================
    🎨 DESIGN TOKENS (THEME)
 ========================= */
 @theme {
-  --color-primary: #1a2e20;
-  --color-primary-light: #2e7d52;
-  --color-primary-bg: #e8f5ec;
+  --color-brand-primary: #4a5043;
+  --color-brand-light: #5f6558;
+  --color-brand-bg: #f7f6f2;
+  --color-brand-text: #2a2a2a;
+  
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Rubik", sans-serif;
 }
 
 /* =========================

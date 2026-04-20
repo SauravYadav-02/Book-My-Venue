@@ -1,17 +1,21 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Layouts & Dashboard
-import Layout from "./components/vendor/layout/Layout";
-import MainLayout from "./components/vendor/layout/mainLayout/MainLayout";
+import Layout from "./components/layouts/Layout";
+import MainLayout from "./components/layouts/MainLayout";
 
 // Public / Auth Pages
-import LoginPage from "./components/common/LoginPage";
-import VendorRegistrationForm from "./Page/User/vendors_Requestform/VendorRegistrationForm";
+import LoginPage from "./pages/auth/LoginPage";
+import VendorRegistrationForm from "./pages/user/VendorRegistration/VendorRegistrationForm";
+
+// Public User Layout & Pages
+import UserLayout from "./components/layouts/UserLayout";
+import Home from "./pages/user/Home";
 
 // Vendor Venue Pages
-import AddVenue from "./Page/vendor/AddVenue";
-import VenueList from "./Page/vendor/AddVenue/VenueList";
-import EditVenue from "./Page/vendor/EditVenues/EditVenue";
+import AddVenue from "./pages/vendor/AddVenue";
+import VenueList from "./pages/vendor/AddVenue/VenueList";
+import EditVenue from "./pages/vendor/EditVenues/EditVenue";
 
 export default function App() {
   return (
@@ -20,6 +24,11 @@ export default function App() {
         {/* Public / Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<VendorRegistrationForm />} />
+
+        {/* Public / User End */}
+        <Route path="/" element={<UserLayout />}>
+          <Route index element={<Home />} />
+        </Route>
 
         {/* Vendor Dashboard */}
         <Route path="/dashboard" element={<MainLayout />} />

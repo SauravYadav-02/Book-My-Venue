@@ -1,6 +1,6 @@
 // src/services/venueService.ts
 import axios, { AxiosError } from "axios";
-import type { VenueForm } from "../Page/vendor/AddVenue/types/Interface";
+import type { VenueForm } from "../pages/vendor/AddVenue/types/Interface";
 
 const API_URL = "http://localhost:3000";
 

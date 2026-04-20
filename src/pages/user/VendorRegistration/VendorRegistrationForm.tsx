@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { User, Mail, Phone, Building2, FileText, CheckCircle2 } from "lucide-react";
 
-import FormSection from "./ReqComponet/componets/FormSection";
-import SuccessScreen from "./ReqComponet/componets/SuccessScreen";
-import { validate } from "./ReqComponet/utils/validate";
+import FormSection from "./components/FormSection";
+import SuccessScreen from "./components/SuccessScreen";
+import { validate } from "./utils/validate";
 import { createVendor } from "../../../services/vendorService";
 
-import { type Field, type FormValues, type Touched } from "./ReqComponet/types/formTypes";
-import { INDIAN_STATES } from "./ReqComponet/componets/states";
+import { type Field, type FormValues, type Touched } from "./types/formTypes";
+import { INDIAN_STATES } from "./components/states";
 
 const INIT: FormValues = {
     fullName: "",

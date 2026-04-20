@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { type CreateVendorRequest, type Vendor } from "../Page/User/vendors_Requestform/ReqComponet/types/vendorTypes";
+import { type CreateVendorRequest, type Vendor } from "../pages/user/VendorRegistration/types/vendorTypes";
 
 const API_URL = "http://localhost:3000/vendors/register";
 

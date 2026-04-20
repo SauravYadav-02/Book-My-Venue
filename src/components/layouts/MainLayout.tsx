@@ -1,8 +1,8 @@
 
-import Layout from '../Layout'
-import DashBoardCard from '../../DashboardStats'
-import Bar_chart from '../../componentsVendor/Bar_chart'
-import BookingRequests from '../../componentsVendor/BookingRequests'
+import Layout from './Layout'
+import DashBoardCard from '../vendor/DashboardStats'
+import Bar_chart from '../vendor/componentsVendor/Bar_chart'
+import BookingRequests from '../vendor/componentsVendor/BookingRequests'
 
 const MainLayout = () => {
     return (

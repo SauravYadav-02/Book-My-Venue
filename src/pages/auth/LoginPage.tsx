@@ -1,7 +1,7 @@
 import React, { useState, type FormEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import type { LoginForm, Role } from "./types/authTypes";
-import { validateLogin, type LoginErrors } from "./ValidationLogin/authValidation";
+import type { LoginForm, Role } from "../../types/authTypes";
+import { validateLogin, type LoginErrors } from "./validation/authValidation";
 import { loginUser } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 

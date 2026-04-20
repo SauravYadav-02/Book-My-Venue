@@ -1,7 +1,7 @@
 
 import { COUNTRIES } from "../types/Constants";
 import type { FormErrors, VenueForm } from "../types/Interface";
-import InputField from "../Components/InputField";
+import InputField from "./InputField";
 import Label from "./Label";
 import SectionCard from "./SectionCard";
 import SelectField from "./SelectField";

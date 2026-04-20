@@ -1,12 +1,12 @@
 import { useState } from "react";
 import type { FormErrors, VenueForm } from "./AddVenue/types/Interface";
 import { INITIAL_FORM, STEPS } from "./AddVenue/types/Constants";
-import StepBar from "./AddVenue/Components/StepBar";
-import Toast from "./AddVenue/Components/Toast";
-import StepBasicInfo from "./AddVenue/Components/StepBasicInfo";
-import StepLocation from "./AddVenue/Components/StepLocation";
-import StepAmenities from "./AddVenue/Components/StepAmenities";
-import StepReview from "./AddVenue/Components/StepReview";
+import StepBar from "./AddVenue/components/StepBar";
+import Toast from "./AddVenue/components/Toast";
+import StepBasicInfo from "./AddVenue/components/StepBasicInfo";
+import StepLocation from "./AddVenue/components/StepLocation";
+import StepAmenities from "./AddVenue/components/StepAmenities";
+import StepReview from "./AddVenue/components/StepReview";
 import { createVenue } from "../../services/venueService";
 
 

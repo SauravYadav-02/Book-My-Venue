@@ -1,6 +1,6 @@
 // import { LoginForm } from "../types/authTypes";
 
-import type { LoginForm } from "../types/authTypes";
+import type { LoginForm } from "../../../types/authTypes";
 
 export interface LoginErrors {
     username?: string;
