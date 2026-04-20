@@ -5,9 +5,10 @@ interface VenueCardProps {
     venue: Venue;
     onEdit: () => void;
     onDelete: () => void;
+    onClick?: () => void;
 }
 
-export default function VenueCard({ venue, onEdit, onDelete }: VenueCardProps) {
+export default function VenueCard({ venue, onEdit, onDelete, onClick }: VenueCardProps) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
@@ -37,68 +38,72 @@ export default function VenueCard({ venue, onEdit, onDelete }: VenueCardProps) {
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col group/card">
-
+        <div 
+            onClick={onClick}
+            className={`bg-white rounded-xl border border-slate-100/80 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 overflow-hidden flex flex-col group/card ${onClick ? 'cursor-pointer' : ''}`}
+        >
             {/* Image / placeholder */}
-            <div className="h-48 bg-slate-100 flex items-center justify-center relative group overflow-hidden">
+            <div className="h-44 bg-slate-50 flex items-center justify-center relative group overflow-hidden">
                 {venue.mediaFiles && venue.mediaFiles.length > 0 ? (
                     <>
                         <img
                             src={getImageUrl(venue.mediaFiles[currentImageIndex])}
                             alt={`${venue.name} - ${currentImageIndex + 1}`}
-                            className="w-full h-full object-cover transition-opacity duration-300"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-105"
                         />
                         {venue.mediaFiles.length > 1 && (
                             <>
                                 <button
                                     onClick={handlePrev}
-                                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/70 hover:bg-white rounded-full flex items-center justify-center text-slate-800 opacity-0 group-hover:opacity-100 transition-all shadow hover:scale-110 z-10"
+                                    className="absolute left-1.5 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/80 backdrop-blur-sm hover:bg-white rounded-full flex items-center justify-center text-slate-800 opacity-0 group-hover:opacity-100 transition-all shadow-sm hover:scale-105 z-10"
                                 >
-                                    <svg className="w-4 h-4 ml-[-1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-3 h-3 ml-[-1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                                     </svg>
                                 </button>
                                 <button
                                     onClick={handleNext}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/70 hover:bg-white rounded-full flex items-center justify-center text-slate-800 opacity-0 group-hover:opacity-100 transition-all shadow hover:scale-110 z-10"
+                                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/80 backdrop-blur-sm hover:bg-white rounded-full flex items-center justify-center text-slate-800 opacity-0 group-hover:opacity-100 transition-all shadow-sm hover:scale-105 z-10"
                                 >
-                                    <svg className="w-4 h-4 mr-[-1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-3 h-3 mr-[-1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                                     </svg>
                                 </button>
                                 {/* Dot indicators */}
-                                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                     {venue.mediaFiles.map((_, i) => (
                                         <div
                                             key={i}
-                                            className={`w-1.5 h-1.5 rounded-full transition-all ${
-                                                i === currentImageIndex ? 'bg-white w-3' : 'bg-white/50 hover:bg-white/80'
+                                            className={`h-1 rounded-full transition-all ${
+                                                i === currentImageIndex ? 'bg-white w-2.5' : 'bg-white/60 hover:bg-white/90 w-1'
                                             }`}
                                         />
                                     ))}
                                 </div>
                             </>
                         )}
+                        {/* Gradient overlay for better text legibility on top elements */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-black/20 pointer-events-none" />
                     </>
                 ) : (
-                    <svg className="w-8 h-8 text-slate-300 group-hover/card:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-slate-300 group-hover/card:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01" />
                     </svg>
                 )}
                 {/* Type badge */}
                 {venue.type && (
-                    <span className="absolute top-2.5 left-2.5 text-[11px] font-semibold bg-white/90
-                        text-slate-600 px-2.5 py-1 rounded-full border border-slate-200">
+                    <span className="absolute top-2.5 left-2.5 text-[11px] font-semibold bg-white/95 backdrop-blur-sm
+                        text-slate-700 px-2.5 py-1 rounded-md shadow-sm border border-white">
                         {venue.type}
                     </span>
                 )}
                 {/* Status badge */}
                 {venue.status && (
-                    <span className={`absolute top-2.5 right-2.5 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm
+                    <span className={`absolute top-2.5 right-2.5 text-[11px] font-bold px-2.5 py-1 rounded-md shadow-sm
                         ${venue.status === 'approved' ? 'bg-emerald-500 text-white' :
                           venue.status === 'rejected' ? 'bg-rose-500 text-white' :
-                          'bg-amber-400 text-white'}`}>
+                          'bg-amber-400 text-white'} border border-white/20 backdrop-blur-sm`}>
                         {venue.status.charAt(0).toUpperCase() + venue.status.slice(1)}
                     </span>
                 )}
@@ -109,78 +114,64 @@ export default function VenueCard({ venue, onEdit, onDelete }: VenueCardProps) {
 
                 {/* Name + Location */}
                 <div>
-                    <h3 className="font-semibold text-slate-800 text-sm leading-snug">{venue.name}</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <h3 className="font-bold text-slate-800 text-sm leading-tight truncate">{venue.name}</h3>
+                    <p className="text-xs text-slate-500 mt-0.5 truncate font-medium">
                         {[venue.city, venue.state].filter(Boolean).join(", ")}
                     </p>
                 </div>
 
-                {/* Description */}
-                {venue.description && (
-                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                        {venue.description}
-                    </p>
-                )}
-
                 {/* Admin Message */}
                 {venue.status === 'rejected' && venue.adminDescription && (
-                    <div className="bg-rose-50 border border-rose-100 p-2.5 rounded-xl flex items-start gap-2">
+                    <div className="bg-rose-50/80 border border-rose-100/80 p-2.5 rounded-lg flex items-start gap-2 line-clamp-2">
                         <svg className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
-                        <p className="text-xs text-rose-600 font-medium leading-relaxed">
-                            <strong className="block text-rose-700 mb-0.5">Rejection reason:</strong>
+                        <p className="text-[11px] text-rose-600 font-medium leading-snug">
                             {venue.adminDescription}
                         </p>
                     </div>
                 )}
 
                 {/* Capacity + Price pills */}
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-2 flex-wrap mt-[2px]">
                     {venue.capacity && (
                         <span className="inline-flex items-center gap-1 text-[11px] font-medium
-                            bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-full">
-                            👥 {venue.capacity} guests
+                            bg-slate-50 text-slate-600 border border-slate-100 px-2 py-1 rounded">
+                            👥 {venue.capacity}
                         </span>
                     )}
                     {venue.pricePerDay && (
                         <span className="inline-flex items-center gap-1 text-[11px] font-medium
-                            bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-full">
+                            bg-slate-50 text-slate-600 border border-slate-100 px-2 py-1 rounded">
                             💰 ${Number(venue.pricePerDay).toLocaleString()}/day
-                        </span>
-                    )}
-                    {venue.availableFrom && (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium
-                            bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-1 rounded-full">
-                            📅 From {new Date(venue.availableFrom).toLocaleDateString()}
                         </span>
                     )}
                 </div>
 
                 {/* Amenities */}
                 {venue.amenities && venue.amenities.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                        {venue.amenities.slice(0, 4).map((a) => (
-                            <span key={a} className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5
-                                rounded-full font-medium border border-emerald-100">
+                    <div className="flex flex-wrap gap-1 mt-[2px]">
+                        {venue.amenities.slice(0, 3).map((a) => (
+                            <span key={a} className="text-[10px] bg-emerald-50/80 text-emerald-700 px-2 py-1
+                                rounded font-medium border border-emerald-100/50">
                                 {a}
                             </span>
                         ))}
-                        {venue.amenities.length > 4 && (
-                            <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium">
-                                +{venue.amenities.length - 4} more
+                        {venue.amenities.length > 3 && (
+                            <span className="text-[10px] bg-slate-50 text-slate-500 px-2 py-1 rounded font-medium border border-slate-100">
+                                +{venue.amenities.length - 3}
                             </span>
                         )}
                     </div>
                 )}
 
                 {/* Edit + Delete buttons */}
-                <div className="flex gap-2 mt-auto pt-1">
+                <div className="flex gap-2 mt-auto pt-3 border-t border-slate-50">
                     <button
-                        onClick={onEdit}
+                        onClick={(e) => { e.stopPropagation(); onEdit(); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl
-                            border border-slate-200 text-xs font-semibold text-slate-600
-                            hover:bg-slate-50 hover:border-slate-300 transition-all"
+                            border border-slate-200/80 bg-white shadow-sm text-xs font-semibold text-slate-700
+                            hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 transition-all"
                     >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -189,10 +180,10 @@ export default function VenueCard({ venue, onEdit, onDelete }: VenueCardProps) {
                         Edit
                     </button>
                     <button
-                        onClick={onDelete}
+                        onClick={(e) => { e.stopPropagation(); onDelete(); }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl
-                            border border-rose-200 text-xs font-semibold text-rose-500
-                            hover:bg-rose-50 hover:border-rose-300 transition-all"
+                            border border-rose-100 bg-white shadow-sm text-xs font-semibold text-rose-600
+                            hover:bg-rose-50 hover:border-rose-200 hover:text-rose-700 transition-all"
                     >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}

@@ -67,9 +67,9 @@ export interface Venue {
 const normalizeVenue = (v: Venue): Venue => {
     let amenities = v.amenities || [];
     if (typeof amenities === "string") {
-        try { amenities = JSON.parse(amenities); } catch {}
+        try { amenities = JSON.parse(amenities); } catch { /* ignore fallback */ }
     } else if (Array.isArray(amenities) && amenities.length === 1 && typeof amenities[0] === "string" && amenities[0].startsWith("[")) {
-        try { amenities = JSON.parse(amenities[0]); } catch {}
+        try { amenities = JSON.parse(amenities[0]); } catch { /* ignore fallback */ }
     }
     return { ...v, amenities };
 };

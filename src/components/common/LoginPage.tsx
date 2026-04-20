@@ -36,11 +36,11 @@ const LoginPage: React.FC = () => {
 
             if ("user" in data) {
                 localStorage.setItem("userId", data.user._id);
-                navigate("/user-dashboard");
+                navigate("/");
 
             } else {
                 localStorage.setItem("vendorId", data.vendor._id);
-                navigate("/vendor-dashboard");
+                navigate("/dashboard");
 
             }
 
@@ -128,7 +128,7 @@ const LoginPage: React.FC = () => {
 
                 {/* Footer */}
                 <p className="text-center text-sm text-gray-500 mt-6">
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <a href="/register" className="text-blue-600 font-semibold hover:underline">
                         Register
                     </a>

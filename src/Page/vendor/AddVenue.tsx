@@ -94,7 +94,7 @@ export default function AddVenue() {
 
   if (submitted && !toast) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="flex-1 bg-slate-50 flex items-center justify-center p-6 relative">
         {/* Subtle decorative background blobs */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-x-1/3 -translate-y-1/3" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-slate-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-x-1/3 translate-y-1/3" />
@@ -125,7 +125,7 @@ export default function AddVenue() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:py-12 sm:px-6 relative overflow-hidden font-sans text-slate-800 selection:bg-emerald-100 selection:text-emerald-900 flex justify-center">
+    <div className="flex-1 bg-slate-50 py-4 px-4 sm:py-6 sm:px-6 relative font-sans text-slate-800 selection:bg-emerald-100 selection:text-emerald-900 flex justify-center">
       {/* Subtle background decoration */}
       <div className="absolute top-0 right-0 w-[40vw] h-[40vw] max-w-2xl max-h-2xl bg-emerald-50 rounded-full mix-blend-multiply filter blur-3xl opacity-60 translate-x-1/3 -translate-y-1/3 pointer-events-none" />
 

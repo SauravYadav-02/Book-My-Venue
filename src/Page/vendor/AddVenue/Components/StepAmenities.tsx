@@ -2,6 +2,7 @@ import { ALL_AMENITIES } from "../types/Constants";
 import type { VenueForm } from "../types/Interface";
 import SectionCard from "./SectionCard";
 
+
 function StepAmenities({
     form, updateAmenities, update,
 }: {
@@ -21,15 +22,15 @@ function StepAmenities({
                                 key={a}
                                 type="button"
                                 onClick={() => updateAmenities(a)}
-                                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all
+                                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-[14px] font-bold border-2 transition-all cursor-pointer
                   ${selected
-                                        ? "bg-emerald-50 border-emerald-400 text-emerald-800"
-                                        : "bg-white border-slate-200 text-slate-500 hover:border-slate-300"
+                                        ? "bg-emerald-50 border-emerald-500 text-emerald-800 shadow-sm shadow-emerald-500/10"
+                                        : "bg-white border-slate-100 text-slate-500 hover:border-slate-300 hover:text-slate-700 hover:shadow-sm"
                                     }`}
                             >
                                 {selected && (
-                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 12 12">
-                                        <path d="M10 3L5 8.5 2 5.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                                    <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 12 12">
+                                        <path d="M10 3L5 8.5 2 5.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 )}
                                 {a}
