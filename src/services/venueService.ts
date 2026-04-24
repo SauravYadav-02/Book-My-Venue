@@ -140,6 +140,25 @@ export const getVenues = async (): Promise<Venue[]> => {
     }
 };
 
+// READ VENDOR'S OWN VENUES
+export const getVenuesByVendor = async (vendorId: string): Promise<Venue[]> => {
+    try {
+        const response = await api.get<Venue[]>(`/venues/vendor/${vendorId}`);
+        return response.data.map(normalizeVenue);
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            console.error(
+                "Get vendor venues error:",
+                error.response?.data || error.message
+            );
+        } else {
+            console.error("Unexpected error:", error);
+        }
+        throw error;
+    }
+};
+
+
 // READ ONE
 export const getVenueById = async (id: string): Promise<Venue> => {
     try {
@@ -188,7 +207,10 @@ export const updateVenue = async (
 // DELETE
 export const deleteVenue = async (id: string): Promise<void> => {
     try {
-        await api.delete(`/venues/${id}`);
+        const vendorId = localStorage.getItem("vendorId");
+        await api.delete(`/venues/${id}`, {
+            params: vendorId ? { vendorId } : {},
+        });
     } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
             console.error(
@@ -201,6 +223,7 @@ export const deleteVenue = async (id: string): Promise<void> => {
         throw error;
     }
 };
+
 
 
 

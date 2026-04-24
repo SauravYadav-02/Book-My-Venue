@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ElementType } from "react";
 import {
     LayoutDashboard,
@@ -101,6 +102,7 @@ const SidebarItem = ({
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 const Sidebar = () => {
+    const navigate = useNavigate();
     const [active, setActive] = useState(() => {
         const path = window.location.pathname.slice(1).toLowerCase();
         const matched = navItems.find(item => item.label.toLowerCase() === path);
@@ -231,6 +233,10 @@ const Sidebar = () => {
 
                     {/* Logout */}
                     <button
+                        onClick={() => {
+                            localStorage.clear();
+                            navigate("/login");
+                        }}
                         className={`
                             group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mt-1 text-sm font-medium
                             text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all duration-200 border-none cursor-pointer bg-transparent

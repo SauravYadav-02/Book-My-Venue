@@ -12,7 +12,8 @@
 }
 
 body {
-  background-color: #f7f6f2; /* Warm soft beige from design */
+  background-color: #f7f6f2;
+  /* Warm soft beige from design */
   color: #2a2a2a;
 }
 
@@ -24,7 +25,7 @@ body {
   --color-brand-light: #5f6558;
   --color-brand-bg: #f7f6f2;
   --color-brand-text: #2a2a2a;
-  
+
   --font-serif: "Playfair Display", serif;
   --font-sans: "Rubik", sans-serif;
 }
@@ -46,5 +47,22 @@ body {
   /* Example: custom shadow */
   .shadow-soft {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Step transition animation */
+  .animate-step-in {
+    animation: stepIn 0.35s ease both;
+  }
+}
+
+@keyframes stepIn {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

@@ -27,6 +27,15 @@ export default function EditVenue() {
             try {
                 setFetching(true);
                 const venue = await getVenueById(id!);
+
+                // ── Ownership guard ──────────────────────────────────
+                const loggedInVendorId = localStorage.getItem("vendorId");
+                if (loggedInVendorId && venue.vendorId !== loggedInVendorId) {
+                    alert("You are not authorized to edit this venue.");
+                    navigate("/venues");
+                    return;
+                }
+
                 setVenueName(venue.name);
                 setForm({
                     name: venue.name || "",

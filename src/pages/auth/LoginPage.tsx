@@ -1,4 +1,4 @@
-import React, { useState, type FormEvent } from "react";
+import React, { useState, useEffect, type FormEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import type { LoginForm, Role } from "../../types/authTypes";
 import { validateLogin, type LoginErrors } from "./validation/authValidation";
@@ -9,10 +9,33 @@ const LoginPage: React.FC = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState<Role>("vendor");
 
+    // Check if user or vendor is already logged in and redirect them
+    useEffect(() => {
+        const userId = localStorage.getItem("userId");
+        const vendorId = localStorage.getItem("vendorId");
+
+        if (userId) {
+            navigate("/");
+        } else if (vendorId) {
+            navigate("/dashboard");
+        }
+    }, [navigate]);
+
     const [form, setForm] = useState<LoginForm>({
+        email: "",
         username: "",
         password: "",
     });
+
+    const handleRoleChange = (newRole: Role) => {
+        setRole(newRole);
+        setErrors({});
+        setForm({
+            email: "",
+            username: "",
+            password: "",
+        });
+    };
 
     const [errors, setErrors] = useState<LoginErrors>({});
 
@@ -24,7 +47,7 @@ const LoginPage: React.FC = () => {
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const validationErrors = validateLogin(form);
+        const validationErrors = validateLogin(role, form);
 
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -70,7 +93,8 @@ const LoginPage: React.FC = () => {
                 {/* Role Toggle */}
                 <div className="flex bg-gray-100 rounded-full p-1 mb-6">
                     <button
-                        onClick={() => setRole("vendor")}
+                        type="button"
+                        onClick={() => handleRoleChange("vendor")}
                         className={`flex-1 py-2 rounded-full text-sm font-semibold transition ${role === "vendor"
                             ? "bg-white shadow text-blue-600"
                             : "text-gray-500"
@@ -79,7 +103,8 @@ const LoginPage: React.FC = () => {
                         Vendor
                     </button>
                     <button
-                        onClick={() => setRole("user")}
+                        type="button"
+                        onClick={() => handleRoleChange("user")}
                         className={`flex-1 py-2 rounded-full text-sm font-semibold transition ${role === "user"
                             ? "bg-white shadow text-blue-600"
                             : "text-gray-500"
@@ -92,17 +117,32 @@ const LoginPage: React.FC = () => {
                 {/* Form */}
                 <form onSubmit={handleLogin} className="space-y-4">
 
-                    {/* Username */}
-                    <div>
-                        <input
-                            name="username"
-                            value={form.username}
-                            placeholder="Username"
-                            onChange={handleChange}
-                            className={`w-full p-3 rounded-lg border ${errors.username ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-blue-400 outline-none`}
-                        />
-                        {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
-                    </div>
+                    {/* Email or Username */}
+                    {role === "user" ? (
+                        <div>
+                            <input
+                                name="email"
+                                type="email"
+                                value={form.email || ""}
+                                placeholder="Email address"
+                                onChange={handleChange}
+                                className={`w-full p-3 rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-blue-400 outline-none`}
+                            />
+                            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                        </div>
+                    ) : (
+                        <div>
+                            <input
+                                name="username"
+                                type="text"
+                                value={form.username || ""}
+                                placeholder="Username"
+                                onChange={handleChange}
+                                className={`w-full p-3 rounded-lg border ${errors.username ? "border-red-500" : "border-gray-300"} focus:ring-2 focus:ring-blue-400 outline-none`}
+                            />
+                            {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
+                        </div>
+                    )}
 
                     {/* Password */}
                     <div>
@@ -127,12 +167,20 @@ const LoginPage: React.FC = () => {
                 </form>
 
                 {/* Footer */}
-                <p className="text-center text-sm text-gray-500 mt-6">
-                    Don&apos;t have an account?{" "}
-                    <a href="/register" className="text-blue-600 font-semibold hover:underline">
-                        Register
-                    </a>
-                </p>
+                <div className="mt-6 text-center text-sm text-gray-500 flex flex-col space-y-2">
+                    <p>
+                        Don&apos;t have an account?{" "}
+                        <a href="/user-register" className="text-blue-600 font-semibold hover:underline">
+                            Register as User
+                        </a>
+                    </p>
+                    <p>
+                        Are you a venue owner?{" "}
+                        <a href="/register" className="text-blue-600 font-semibold hover:underline">
+                            Register as Vendor
+                        </a>
+                    </p>
+                </div>
             </div>
         </div>
     );

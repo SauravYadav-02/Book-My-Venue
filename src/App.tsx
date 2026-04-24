@@ -7,6 +7,7 @@ import MainLayout from "./components/layouts/MainLayout";
 // Public / Auth Pages
 import LoginPage from "./pages/auth/LoginPage";
 import VendorRegistrationForm from "./pages/user/VendorRegistration/VendorRegistrationForm";
+import UserRegistration from "./pages/auth/UserRegistration";
 
 // Public User Layout & Pages
 import UserLayout from "./components/layouts/UserLayout";
@@ -16,6 +17,11 @@ import Home from "./pages/user/Home";
 import AddVenue from "./pages/vendor/AddVenue";
 import VenueList from "./pages/vendor/AddVenue/VenueList";
 import EditVenue from "./pages/vendor/EditVenues/EditVenue";
+import Discover from "./pages/user/Discover";
+import VenueDetails from "./pages/user/VenueDetails";
+
+// Context
+import { VenueProvider } from "./store/Venuecontext";
 
 export default function App() {
   return (
@@ -24,10 +30,13 @@ export default function App() {
         {/* Public / Auth Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<VendorRegistrationForm />} />
+        <Route path="/user-register" element={<UserRegistration />} />
 
         {/* Public / User End */}
-        <Route path="/" element={<UserLayout />}>
+        <Route path="/" element={<VenueProvider><UserLayout /></VenueProvider>}>
           <Route index element={<Home />} />
+          <Route path="discover" element={<Discover />} />
+          <Route path="venue/:id" element={<VenueDetails />} />
         </Route>
 
         {/* Vendor Dashboard */}

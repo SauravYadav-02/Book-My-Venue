@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getVenues, deleteVenue, type Venue } from "../../../services/venueService";
+import { getVenuesByVendor, deleteVenue, type Venue } from "../../../services/venueService";
 import VenueCard from "../EditVenues/components/VenueCard";
 
 export default function VenueList() {
@@ -28,7 +28,13 @@ export default function VenueList() {
     const fetchVenues = async () => {
         try {
             setLoading(true);
-            const data = await getVenues();
+            const vendorId = localStorage.getItem("vendorId");
+            if (!vendorId) {
+                setError("You must be logged in as a vendor to view your venues.");
+                setLoading(false);
+                return;
+            }
+            const data = await getVenuesByVendor(vendorId);
             setVenues(data);
         } catch {
             setError("Failed to load venues. Please try again.");

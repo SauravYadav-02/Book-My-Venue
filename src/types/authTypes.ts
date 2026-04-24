@@ -1,7 +1,8 @@
 export type Role = "user" | "vendor";
 
 export interface LoginForm {
-    username: string;
+    email?: string;
+    username?: string;
     password: string;
 }
 
