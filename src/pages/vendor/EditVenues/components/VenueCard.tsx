@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Venue } from "../../../../services/venueService";
+import { currencyFormatter } from "../../../../utils/currency";
 
 interface VenueCardProps {
     venue: Venue;
@@ -143,7 +144,7 @@ export default function VenueCard({ venue, onEdit, onDelete, onClick }: VenueCar
                     {venue.pricePerDay && (
                         <span className="inline-flex items-center gap-1 text-[11px] font-medium
                             bg-slate-50 text-slate-600 border border-slate-100 px-2 py-1 rounded">
-                            💰 ${Number(venue.pricePerDay).toLocaleString()}/day
+                            💰 {currencyFormatter.format(Number(venue.pricePerDay))}/day
                         </span>
                     )}
                 </div>

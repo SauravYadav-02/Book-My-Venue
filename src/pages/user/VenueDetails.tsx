@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, BadgeCheck, Calendar, Clock, Heart, MapPin, Share2, ShieldCheck, Star, Users, } from "lucide-react";
 import { getVenueById, getVenueImage, type Venue } from "../../services/VenueUserservice ";
+import { getBookedDatesForVenue, createBooking } from "../../services/bookingService";
+import { currencyFormatter } from "../../utils/currency";
+import toast from "react-hot-toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./VenueDetails.css";
 
 // ── Time slot options ────────────────────────────────────────────────
 const TIME_SLOTS = [
@@ -20,9 +26,11 @@ export default function VenueDetails() {
     const [error, setError] = useState<string | null>(null);
 
     // Booking form state
-    const [eventDate, setEventDate] = useState("");
+    const [eventDate, setEventDate] = useState<Date | null>(null);
     const [timeSlot, setTimeSlot] = useState(TIME_SLOTS[0].value);
     const [wishlist, setWishlist] = useState(false);
+    const [bookedDates, setBookedDates] = useState<string[]>([]);
+    const [isBooking, setIsBooking] = useState(false);
 
     // ── Fetch venue ──────────────────────────────────────────────────
     useEffect(() => {
@@ -36,6 +44,9 @@ export default function VenueDetails() {
                 const data = await getVenueById(id);
                 setVenue(data);
 
+                const dates = await getBookedDatesForVenue(id);
+                setBookedDates(dates);
+
             } catch (err: unknown) {
                 setError((err as Error).message || "Failed to load venue");
             } finally {
@@ -45,6 +56,75 @@ export default function VenueDetails() {
 
         fetchVenue();
     }, [id]);
+
+    const bookedDatesList = bookedDates.map(d => {
+        const [y, m, dNum] = d.split('-');
+        return new Date(Number(y), Number(m)-1, Number(dNum));
+    });
+
+    const isDateBooked = (date: Date) => {
+        return bookedDatesList.some(
+            bookedDate => 
+                bookedDate.getFullYear() === date.getFullYear() &&
+                bookedDate.getMonth() === date.getMonth() &&
+                bookedDate.getDate() === date.getDate()
+        );
+    };
+
+    const handleDateChange = (date: Date | null) => {
+        if (!date) {
+            setEventDate(null);
+            return;
+        }
+
+        if (isDateBooked(date)) {
+            toast.error("This date is already booked. Please select another date.");
+            setEventDate(null);
+        } else {
+            setEventDate(date);
+        }
+    };
+
+    const getDayClassName = (date: Date) => {
+        return isDateBooked(date) ? "booked-date" : "";
+    };
+
+    const handleBooking = async () => {
+        if (!eventDate) {
+            toast.error("Please select an event date");
+            return;
+        }
+
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+            toast.error("Please login to book a venue");
+            navigate("/login");
+            return;
+        }
+
+        try {
+            setIsBooking(true);
+            
+            const yyyy = eventDate.getFullYear();
+            const mm = String(eventDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(eventDate.getDate()).padStart(2, '0');
+            const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+            await createBooking(
+                userId,
+                venue!.vendorId,
+                venue!._id,
+                formattedDate,
+                total
+            );
+            toast.success("Venue booked successfully!");
+            navigate("/profile");
+        } catch (error: any) {
+            toast.error(error?.response?.data?.error || "Failed to book venue");
+        } finally {
+            setIsBooking(false);
+        }
+    };
 
     // ── Derived pricing ──────────────────────────────────────────────
     const selectedSlot = TIME_SLOTS.find((s) => s.value === timeSlot);
@@ -217,7 +297,7 @@ export default function VenueDetails() {
                             {/* Price header */}
                             <div className="flex items-baseline gap-1">
                                 <span className="text-3xl font-serif font-bold text-[#2d2d2d]">
-                                    ${basePrice.toLocaleString()}
+                                    {currencyFormatter.format(basePrice)}
                                 </span>
                                 <span className="text-sm text-gray-400 font-medium">/ hour</span>
                             </div>
@@ -232,11 +312,12 @@ export default function VenueDetails() {
                                         size={15}
                                         className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                                     />
-                                    <input
-                                        type="date"
-                                        value={eventDate}
-                                        onChange={(e) => setEventDate(e.target.value)}
-                                        min={new Date().toISOString().split("T")[0]}
+                                    <DatePicker
+                                        selected={eventDate}
+                                        onChange={handleDateChange}
+                                        minDate={new Date()}
+                                        dayClassName={getDayClassName}
+                                        placeholderText="Select a date"
                                         className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm text-[#2d2d2d] bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#5C614D]/30 focus:border-[#5C614D] transition-all"
                                     />
                                 </div>
@@ -274,26 +355,28 @@ export default function VenueDetails() {
                                 <div className="flex justify-between text-gray-500">
                                     <span>Base Price</span>
                                     <span className="text-[#2d2d2d] font-medium">
-                                        ${basePrice.toLocaleString()}
+                                        {currencyFormatter.format(basePrice)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-gray-500">
                                     <span>Service Fee</span>
                                     <span className="text-[#2d2d2d] font-medium">
-                                        ${serviceFee.toLocaleString()}
+                                        {currencyFormatter.format(serviceFee)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between font-semibold text-[#2d2d2d] text-base pt-2 border-t border-gray-100">
                                     <span>Total</span>
-                                    <span>${total.toLocaleString()}</span>
+                                    <span>{currencyFormatter.format(total)}</span>
                                 </div>
                             </div>
 
                             {/* CTA */}
                             <button
-                                className="w-full bg-[#5C614D] hover:bg-[#4C5040] text-white py-4 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-[#5C614D]/20 hover:shadow-[#5C614D]/40 hover:-translate-y-0.5 transform"
+                                onClick={handleBooking}
+                                disabled={isBooking || !eventDate}
+                                className="w-full bg-[#5C614D] hover:bg-[#4C5040] disabled:bg-gray-400 text-white py-4 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-[#5C614D]/20 hover:shadow-[#5C614D]/40 hover:-translate-y-0.5 transform"
                             >
-                                Request to Book
+                                {isBooking ? "Booking..." : "Request to Book"}
                             </button>
 
                             <p className="text-center text-xs text-gray-400 font-medium tracking-wide uppercase">

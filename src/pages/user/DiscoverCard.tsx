@@ -1,5 +1,6 @@
 import { MapPin, Star, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { currencyFormatter } from "../../utils/currency";
 
 interface DiscoverCardProps {
     venueId: string;
@@ -82,7 +83,7 @@ export default function DiscoverCard({
                         <span>Up to {capacity}</span>
                     </div>
                     <div className="text-right flex items-baseline gap-1">
-                        <span className="text-[#2d2d2d] font-serif font-bold text-xl">${price}</span>
+                        <span className="text-[#2d2d2d] font-serif font-bold text-xl">{currencyFormatter.format(price)}</span>
                         <span className="text-gray-400 text-xs font-medium uppercase tracking-wider">/day</span>
                     </div>
                 </div>

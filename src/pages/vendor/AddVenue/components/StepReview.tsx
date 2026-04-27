@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import type { VenueForm } from "../types/Interface";
 import SectionCard from "./SectionCard";
+import { currencyFormatter } from "../../../../utils/currency";
 
 
 export const ReviewRow = ({ label, value }: { label: string; value: string }) => (
@@ -16,7 +17,7 @@ export default function StepReview({
     form: VenueForm; onAddMedia: (files: File[]) => void; onRemoveMedia?: (index: number) => void;
 }) {
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const fmt = (n: string) => n ? `$${parseInt(n).toLocaleString()}` : "—";
+    const fmt = (n: string) => n ? currencyFormatter.format(parseInt(n)) : "—";
     const MAX_IMAGES = 10;
     const remaining = MAX_IMAGES - form.mediaFiles.length;
 

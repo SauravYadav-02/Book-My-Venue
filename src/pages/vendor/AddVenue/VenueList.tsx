@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getVenuesByVendor, deleteVenue, type Venue } from "../../../services/venueService";
 import VenueCard from "../EditVenues/components/VenueCard";
+import { currencyFormatter } from "../../../utils/currency";
 
 export default function VenueList() {
     const navigate = useNavigate();
@@ -85,7 +86,7 @@ export default function VenueList() {
                         </p>
                     </div>
                     <button
-                        onClick={() => navigate("/venues/add")}
+                        onClick={() => navigate("/venue/add")}
                         className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500
                             hover:bg-emerald-600 text-white text-sm font-semibold transition-all"
                     >
@@ -112,7 +113,7 @@ export default function VenueList() {
                         <p className="text-slate-700 font-medium">No venues yet</p>
                         <p className="text-slate-400 text-sm mt-1">Add your first venue to get started.</p>
                         <button
-                            onClick={() => navigate("/venues/add")}
+                            onClick={() => navigate("/venue/add")}
                             className="mt-5 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600
                                 text-white text-sm font-semibold transition-all"
                         >
@@ -126,7 +127,7 @@ export default function VenueList() {
                             <VenueCard
                                 key={venue._id}
                                 venue={venue}
-                                onEdit={() => navigate(`/venues/edit/${venue._id}`)}
+                                onEdit={() => navigate(`/venue/edit/${venue._id}`)}
                                 onDelete={() => setDeleteId(venue._id)}
                                 onClick={() => setSelectedVenue(venue)}
                             />
@@ -298,7 +299,7 @@ export default function VenueList() {
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                         </div>
                                         <p className="text-xs text-slate-500 font-medium">Price/Day</p>
-                                        <p className="font-semibold text-slate-800">{selectedVenue.pricePerDay ? `$${Number(selectedVenue.pricePerDay).toLocaleString()}` : "N/A"}</p>
+                                        <p className="font-semibold text-slate-800">{selectedVenue.pricePerDay ? currencyFormatter.format(Number(selectedVenue.pricePerDay)) : "N/A"}</p>
                                     </div>
 
                                     {selectedVenue.availableFrom && (
@@ -357,7 +358,7 @@ export default function VenueList() {
                                 <button
                                     onClick={() => {
                                         setSelectedVenue(null);
-                                        navigate(`/venues/edit/${selectedVenue._id}`);
+                                        navigate(`/venue/edit/${selectedVenue._id}`);
                                     }}
                                     className="flex-1 py-3 rounded-xl bg-slate-900 border border-slate-900 text-sm font-bold text-white hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 shadow-sm"
                                 >

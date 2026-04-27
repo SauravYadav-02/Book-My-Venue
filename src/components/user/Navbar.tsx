@@ -36,8 +36,9 @@ export default function Navbar() {
       </div>
 
       <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-brand-text">
-        <Link to="/" className="hover:text-brand-primary transition-colors">Discover</Link>
-        <Link to="/" className="hover:text-brand-primary transition-colors">Planning Tools</Link>
+        <Link to="/" className="hover:text-brand-primary transition-colors">Home</Link>
+        <Link to="/discover" className="hover:text-brand-primary transition-colors">Discover</Link>
+        <Link to="/" className="hover:text-brand-primary transition-colors">Planning</Link>
         <Link to="/" className="hover:text-brand-primary transition-colors">Inspiration</Link>
       </nav>
 
@@ -46,17 +47,17 @@ export default function Navbar() {
           <div className="relative group cursor-pointer flex items-center">
             {/* Profile Avatar */}
             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#4C5040] shadow-sm transition-transform group-hover:scale-105">
-                {user.profilePhoto ? (
-                    <img 
-                        src={`http://localhost:3000/${user.profilePhoto}`} 
-                        alt={user.name} 
-                        className="w-full h-full object-cover"
-                    />
-                ) : (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
-                        <UserIcon size={20} />
-                    </div>
-                )}
+              {user.profilePhoto ? (
+                <img
+                  src={`http://localhost:3000/${user.profilePhoto}`}
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                  <UserIcon size={20} />
+                </div>
+              )}
             </div>
 
             {/* Hover Dropdown */}
@@ -66,11 +67,17 @@ export default function Navbar() {
                   <p className="text-xs text-gray-400 font-semibold tracking-wider uppercase">Signed in as</p>
                   <p className="text-sm font-bold text-gray-800 truncate">{user.name}</p>
                 </div>
-                <button 
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2.5 rounded-xl text-red-600 font-semibold hover:bg-red-50 transition-colors"
+                <Link
+                  to="/profile"
+                  className="w-full text-left px-4 py-2.5 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:text-[#5C614D] transition-colors"
                 >
-                    Logout
+                  My Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2.5 rounded-xl text-red-600 font-semibold hover:bg-red-50 transition-colors"
+                >
+                  Logout
                 </button>
               </div>
             </div>

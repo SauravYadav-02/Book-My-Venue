@@ -17,17 +17,18 @@ import {
 
 // ─── Nav Config ───────────────────────────────────────────────────────────────
 const navItems = [
-    { label: "Dashboard", icon: LayoutDashboard },
-    { label: "Listings", icon: ClipboardList },
-    { label: "Bookings", icon: CalendarDays, badge: 28 },
-    { label: "Calendar", icon: Calendar },
-    { label: "Analytics", icon: BarChart3 },
-    { label: "Settings", icon: Settings },
+    { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { label: "Listings", path: "/venue", icon: ClipboardList },
+    { label: "Bookings", path: "/booking", icon: CalendarDays, badge: 28 },
+    { label: "Calendar", path: "/calendar", icon: Calendar },
+    { label: "Analytics", path: "/analytics", icon: BarChart3 },
+    { label: "Settings", path: "/settings", icon: Settings },
 ];
 
 // ─── Sidebar Item ─────────────────────────────────────────────────────────────
 const SidebarItem = ({
     label,
+    path,
     icon: Icon,
     badge,
     active,
@@ -35,22 +36,23 @@ const SidebarItem = ({
     collapsed,
 }: {
     label: string;
+    path: string;
     icon: ElementType;
     badge?: number;
     active: string;
     setActive: (v: string) => void;
     collapsed: boolean;
 }) => {
+    const navigate = useNavigate();
     const isActive = active === label;
 
     return (
         <a
-            href={`/${label.toLowerCase()}`}
+            href={path}
             title={collapsed ? label : undefined}
             onClick={(e) => {
                 e.preventDefault();
-                // Optionally update URL without reloading
-                window.history.pushState({}, '', `/${label.toLowerCase()}`);
+                navigate(path);
                 setActive(label);
             }}
             className={`
@@ -191,6 +193,7 @@ const Sidebar = () => {
                         <SidebarItem
                             key={item.label}
                             label={item.label}
+                            path={item.path}
                             icon={item.icon}
                             badge={item.badge}
                             active={active}

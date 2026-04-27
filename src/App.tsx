@@ -19,6 +19,9 @@ import VenueList from "./pages/vendor/AddVenue/VenueList";
 import EditVenue from "./pages/vendor/EditVenues/EditVenue";
 import Discover from "./pages/user/Discover";
 import VenueDetails from "./pages/user/VenueDetails";
+import Profile from "./pages/user/Profile";
+import Bookings from "./pages/vendor/Bookings";
+import CalendarPage from "./pages/vendor/CalendarPage";
 
 // Context
 import { VenueProvider } from "./store/Venuecontext";
@@ -37,15 +40,18 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="discover" element={<Discover />} />
           <Route path="venue/:id" element={<VenueDetails />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
 
         {/* Vendor Dashboard */}
         <Route path="/dashboard" element={<MainLayout />} />
 
         {/* Vendor Venue Management (Wrapped in Layout for Sidebar/Navbar) */}
-        <Route path="/venues" element={<Layout><VenueList /></Layout>} />
-        <Route path="/venues/add" element={<Layout><AddVenue /></Layout>} />
-        <Route path="/venues/edit/:id" element={<Layout><EditVenue /></Layout>} />
+        <Route path="/venue" element={<Layout><VenueList /></Layout>} />
+        <Route path="/venue/add" element={<Layout><AddVenue /></Layout>} />
+        <Route path="/venue/edit/:id" element={<Layout><EditVenue /></Layout>} />
+        <Route path="/booking" element={<Layout><Bookings /></Layout>} />
+        <Route path="/calendar" element={<Layout><CalendarPage /></Layout>} />
 
         {/* Fallback route */}
         <Route path="*" element={<Navigate to="/login" replace />} />
